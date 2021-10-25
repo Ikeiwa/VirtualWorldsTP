@@ -4,7 +4,7 @@ using UnityEngine;
 
 /// <summary>Type of primitive, generable by a <c>PrimitiveFactory</c></summary>
 public enum PrimitiveType {
-    Sphere, Isocaedron, Cube, Pyramid4, Cylindre, Cone
+    Sphere, Isocaedron, Cube, Pyramid4, Cylindre, Cone, RoofSingle, RoofDouble
 }
 
 /// <summary>Factory for all Primitive mesh types, that may be used for composition.</summary>
@@ -57,6 +57,12 @@ public class PrimitiveFactory {
                 break;
             case PrimitiveType.Cone:
                 toreturn = CylindreBuilder.CreateCylinder(0, 0.5f, 1, 12, 1, false);
+                break;
+            case PrimitiveType.RoofSingle:
+                toreturn = RoofBuilder.BuildRoof(false);
+                break;
+            case PrimitiveType.RoofDouble:
+                toreturn = RoofBuilder.BuildRoof(true);
                 break;
         }
         geometryBuffer.Add(type, toreturn);
