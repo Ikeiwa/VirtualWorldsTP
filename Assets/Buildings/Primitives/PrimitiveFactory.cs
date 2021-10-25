@@ -4,7 +4,7 @@ using UnityEngine;
 
 /// <summary>Type of primitive, generable by a <c>PrimitiveFactory</c></summary>
 public enum PrimitiveType {
-    Sphere, Cube, pyramid4
+    Sphere,Isocaedron, Cube, pyramid4
 }
 
 /// <summary>Factory for all Primitive mesh types, that may be used for composition.</summary>
@@ -43,7 +43,11 @@ public class PrimitiveFactory {
             case PrimitiveType.Sphere:
                 toreturn = SphereBuilder.make1t1Sphere(3);
                 break;
+            case PrimitiveType.Isocaedron:
+                toreturn = SphereBuilder.make1t1Sphere(0);
+                break;
             case PrimitiveType.Cube:
+                toreturn = CubeBuilder.buildCube1t1();
                 break;
             case PrimitiveType.pyramid4:
                 break;
