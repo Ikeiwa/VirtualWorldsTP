@@ -7,24 +7,45 @@ public enum MetaBuildingType{
     Debug
 }
 
+/// <summary>A<c>BuildingComposer</c> is an object that creates buildings for a set area. 
+/// The design intent is to have a single composer per tile in the generator, and have the
+/// composer generate buildings using its inner seed, which is different for each tile.</summary>
 public class BuildingComposer {
 
-    private Random rand;
+    private System.Random rand;
 
-    public BuildingComposer(int32 seed){
-        rand = new Random(seed);
+    public BuildingComposer(int seed){
+        rand = new System.Random(seed);
     }
 
     public BuildingComposer(){
-        rand = new Random();
+        rand = new System.Random();
     }
 
-    /// <summary>Composes a new Mesh for a given type. Multiple calls of this function may result in different outputs,</summary>
-    public Mesh ComposeNew(MetaBuildingType type){
-        Mesh cube = PrimitiveFactory.GetMesh(PrimitiveType.Cube);
-        Mesh roof = PrimitiveFactory.GetMesh(PrimitiveType.RoofDouble);
+    /// <summary>Composes a new Mesh for a given type. Multiple calls of this function may result in different outputs,
+    /// as calls iterate the inner random generator. THe returned mesh's vertices are all between 0 and size parameters.</summary>
+    public Mesh ComposeNew(MetaBuildingType type, float sizeX, float sizeZ){
+        Mesh m1 = PrimitiveFactory.GetMesh(PrimitiveType.Cube);
+        Mesh m2 = PrimitiveFactory.GetMesh(PrimitiveType.RoofDouble);
         
-        return cube;
+        CombineInstance[] combine = new CombineInstance[2];
+
+        combine[0] = new CombineInstance
+        {
+            mesh = m1,
+            subMeshIndex = 0,
+            transform = Matrix4x4.TRS(new Vector3(0,0,0), Quaternion.identity, new Vector3(1, 1, 1))
+        };
+        combine[1] = new CombineInstance
+        {
+            mesh = m2,
+            subMeshIndex = 0,
+            transform = Matrix4x4.TRS(new Vector3(0, 1, 0), Quaternion.identity, new Vector3(1.5f, 1, 1))
+        };
+
+        Mesh toreturn = new Mesh();
+        toreturn.CombineMeshes(combine, true, true, false);
+        return toreturn;
     }
 
 }
