@@ -18,7 +18,9 @@ public class BuildTesterMono : MonoBehaviour
         gameObject.AddComponent<MeshFilter>();
         gameObject.AddComponent<MeshRenderer>();
         typelast = type;
-        gameObject.GetComponent<MeshFilter>().mesh = composer.ComposeNew(type,5,5);
+        Mesh m = composer.ComposeNew(type, 5, 5);
+        m.RecalculateNormals();
+        gameObject.GetComponent<MeshFilter>().mesh = m;
     }
 
     void Update()
@@ -29,7 +31,9 @@ public class BuildTesterMono : MonoBehaviour
             buildingchanged = true;
         }
         if (buildingchanged) {
-            gameObject.GetComponent<MeshFilter>().mesh = composer.ComposeNew(type, 5, 5);
+            Mesh m = composer.ComposeNew(type, 5, 5);
+            m.RecalculateNormals();
+            gameObject.GetComponent<MeshFilter>().mesh = m;
         }
     }
 }
