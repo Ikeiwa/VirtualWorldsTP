@@ -25,22 +25,35 @@ public class BuildingComposer {
     /// <summary>Composes a new Mesh for a given type. Multiple calls of this function may result in different outputs,
     /// as calls iterate the inner random generator. THe returned mesh's vertices are all between 0 and size parameters.</summary>
     public Mesh ComposeNew(MetaBuildingType type, float sizeX, float sizeZ){
+        switch (type) {
+            default: return ComposeDebug(sizeX, sizeZ);
+        }
+    }
+
+    private Mesh ComposeDebug(float sizeX, float sizeZ) {
+        Mesh bse = PrimitiveFactory.GetMesh(PrimitiveType.Cube);
         Mesh m1 = PrimitiveFactory.GetMesh(PrimitiveType.Cube);
         Mesh m2 = PrimitiveFactory.GetMesh(PrimitiveType.RoofDouble);
-        
-        CombineInstance[] combine = new CombineInstance[2];
+
+        CombineInstance[] combine = new CombineInstance[3];
 
         combine[0] = new CombineInstance
         {
             mesh = m1,
             subMeshIndex = 0,
-            transform = Matrix4x4.TRS(new Vector3(0,0,0), Quaternion.identity, new Vector3(1, 1, 1))
+            transform = Matrix4x4.TRS(new Vector3(sizeX/2, 0, sizeZ/2), Quaternion.identity, new Vector3(sizeX, 0.1f, sizeZ))
         };
         combine[1] = new CombineInstance
         {
+            mesh = m1,
+            subMeshIndex = 0,
+            transform = Matrix4x4.TRS(new Vector3(sizeX / 2, 0.55f, sizeZ / 2), Quaternion.identity, new Vector3(1, 1, 1))
+        };
+        combine[2] = new CombineInstance
+        {
             mesh = m2,
             subMeshIndex = 0,
-            transform = Matrix4x4.TRS(new Vector3(0, 1, 0), Quaternion.identity, new Vector3(1.5f, 1, 1))
+            transform = Matrix4x4.TRS(new Vector3(sizeX / 2, 1.55f, sizeZ / 2), Quaternion.identity, new Vector3(1.5f, 1, 1))
         };
 
         Mesh toreturn = new Mesh();
