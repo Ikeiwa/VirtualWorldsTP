@@ -25,7 +25,6 @@ public class PrimitiveFactory {
         if (geometryBuffer.TryGetValue(type, out Mesh toreturn))
             return toreturn;
         toreturn = GenerateMeshFor(type);
-        geometryBuffer.Add(type, toreturn);
         return toreturn;
     }
 
