@@ -81,9 +81,32 @@ public class BuildingComposer
             transform = Matrix4x4.TRS(new Vector3(sizeX / 2, 0.05f, sizeZ / 2), Quaternion.identity, new Vector3(sizeX, 0.1f, sizeZ))
         });
 
-        addBrutalSegment(combine, 0.5f, 0.5f, 1.5f, 1.5f, 6);
-        addBrutalSegment(combine, 0, 2, 2, 3, 2);
-        addBrutalSegment(combine, 2, 0, 3, 5, 5);
+        int notgenerated = rand.Next(5);
+
+        if (notgenerated != 0)
+        {
+            float sizeLocalX = (float)rand.NextDouble() * (sizeX / 2.2f) + sizeX / 4f, 
+                sizeLocalZ = (float)rand.NextDouble() * (sizeZ / 2.5f) + sizeX / 4f;
+            addBrutalSegment(combine, 0.3f, 0.3f, sizeLocalX, sizeLocalZ, rand.Next(5) + 1);
+        }
+        if (notgenerated != 1)
+        {
+            float sizeLocalX = (float)rand.NextDouble() * (sizeX / 2.2f) + sizeX / 4f,
+                sizeLocalZ = (float)rand.NextDouble() * (sizeZ / 2.5f) + sizeX / 4f;
+            addBrutalSegment(combine, sizeX - sizeLocalX - 0.15f, 0.1f, sizeLocalX, sizeLocalZ, rand.Next(3) + 1);
+        }
+        if (notgenerated != 2)
+        {
+            float sizeLocalX = (float)rand.NextDouble() * (sizeX / 2.2f) + sizeX / 4f,
+                sizeLocalZ = (float)rand.NextDouble() * (sizeZ / 2.5f) + sizeX / 4f;
+            addBrutalSegment(combine, 0.2f, sizeZ - sizeLocalZ - 0.15f, sizeLocalX, sizeLocalZ, rand.Next(3) + 2);
+        }
+        if (notgenerated != 3)
+        {
+            float sizeLocalX = (float)rand.NextDouble() * (sizeX / 2.2f) + sizeX / 4f,
+                sizeLocalZ = (float)rand.NextDouble() * (sizeZ / 2.5f) + sizeX / 4f;
+            addBrutalSegment(combine, sizeX - sizeLocalX - 0.17f, sizeZ - sizeLocalZ - 0.17f, sizeLocalX, sizeLocalZ, rand.Next(4) + 2);
+        }
 
         Mesh toreturn = new Mesh();
         toreturn.CombineMeshes(combine.ToArray(), true, true, false);
@@ -107,7 +130,7 @@ public class BuildingComposer
             {
                 mesh = cube,
                 subMeshIndex = 0,
-                transform = Matrix4x4.TRS(new Vector3(x + (sizeX / 2), 0.01f + (f*height/floors), z + (sizeZ / 2)), Quaternion.identity, new Vector3(sizeX+0.2f, 0.1f, sizeZ+0.2f))
+                transform = Matrix4x4.TRS(new Vector3(x + (sizeX / 2), 0.01f + (f * height / floors), z + (sizeZ / 2)), Quaternion.identity, new Vector3(sizeX + 0.2f, 0.1f, sizeZ + 0.2f))
             });
         }
         combine.Add(new CombineInstance

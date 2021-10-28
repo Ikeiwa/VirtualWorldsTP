@@ -9,8 +9,9 @@ public class BuildTesterMono : MonoBehaviour
 
     private bool buildingchanged = true;
     [SerializeField]
-    private MetaBuildingType type = MetaBuildingType.Debug;
+    private MetaBuildingType type = MetaBuildingType.BrutalTower;
     private MetaBuildingType typelast;
+    private float lastinvalidate;
 
     private BuildingComposer composer = new BuildingComposer();
 
@@ -30,7 +31,12 @@ public class BuildTesterMono : MonoBehaviour
             typelast = type;
             buildingchanged = true;
         }
+        if (Time.time > lastinvalidate + 2) {
+            lastinvalidate = Time.time;
+            buildingchanged = true;
+        }
         if (buildingchanged) {
+            buildingchanged = false;
             Mesh m = composer.ComposeNew(type, 5, 5);
             m.RecalculateNormals();
             gameObject.GetComponent<MeshFilter>().mesh = m;
