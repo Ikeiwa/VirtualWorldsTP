@@ -15,6 +15,7 @@ public class BuildingComposer
 {
 
     private System.Random rand;
+    public static readonly float UniversalFloorSize = 2.4f;
 
     public BuildingComposer(int seed)
     {
@@ -117,7 +118,7 @@ public class BuildingComposer
     {
         Mesh cube = PrimitiveFactory.GetMesh(PrimitiveType.Cube);
         Mesh pyra = PrimitiveFactory.GetMesh(PrimitiveType.Pyramid4);
-        float height = 1.4f * floors;
+        float height = UniversalFloorSize * floors;
         combine.Add(new CombineInstance
         {
             mesh = cube,
