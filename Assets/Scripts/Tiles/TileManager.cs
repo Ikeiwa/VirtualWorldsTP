@@ -8,15 +8,15 @@ public class TileManager : MonoBehaviour
     public MainTile tilePrefab;
     public int viewDistance = 3;
 
-    public const float TileSize = 100;
+    public const float TileSize = 30;
 
-    private List<MainTile> tiles;
+    public static Dictionary<Vector2Int,MainTile> tiles;
     private Vector2Int currentPlayerTile;
     private Vector2Int lastPlayerTile;
 
     void Start()
     {
-        tiles = new List<MainTile>();
+        tiles = new Dictionary<Vector2Int,MainTile>();
         lastPlayerTile = GetPlayerPos();
         StartCoroutine(UpdateTiles());
     }
@@ -32,7 +32,7 @@ public class TileManager : MonoBehaviour
         }
     }
 
-    private Vector2Int GetTilePosition(Vector3 position)
+    public static Vector2Int GetTilePosition(Vector3 position)
     {
         int posX = Mathf.RoundToInt(position.x / TileSize);
         int posY = Mathf.RoundToInt(position.z / TileSize);
@@ -59,27 +59,39 @@ public class TileManager : MonoBehaviour
             }
         }
 
-        for (int t = tiles.Count - 1; t >= 0; t--)
+        List<Vector2Int> tagToRemove = new List<Vector2Int>();
+
+        foreach (var tile in tiles.Keys)
         {
-            Vector2Int tilePos = GetTilePosition(tiles[t].transform.position);
-            Vector2Int tileDist = tilePos - currentPlayerTile;
+            Vector2Int tileDist = tile - currentPlayerTile;
 
             if (Mathf.CeilToInt(tileDist.magnitude) >= viewDistance)
             {
-                Destroy(tiles[t].gameObject);
-                tiles.RemoveAt(t);
+                tagToRemove.Add(tile);
             }
-                
+        }
+
+        foreach (var tileToRemove in tagToRemove)
+        {
+            Destroy(tiles[tileToRemove].gameObject);
+            tiles.Remove(tileToRemove);
         }
     }
 
     private void SpawnTile(int x, int y)
     {
-        Vector3 tilePos = new Vector3(x * TileSize, 0, y * TileSize);
-
-        if (Physics.OverlapSphereNonAlloc(tilePos, 1, new Collider[1], 1 << 7) == 0)
+        Vector2Int tile = new Vector2Int(x, y);
+        if (!tiles.ContainsKey(tile))
         {
-            tiles.Add(Instantiate(tilePrefab,tilePos,Quaternion.identity));
+            Vector3 tilePos = new Vector3(x * TileSize, 0, y * TileSize);
+            tiles.Add(tile,Instantiate(tilePrefab,tilePos,Quaternion.identity));
         }
+    }
+
+    public static MainTile GetTileAt(Vector2Int pos)
+    {
+        if (tiles.ContainsKey(pos))
+            return tiles[pos];
+        return null;
     }
 }
