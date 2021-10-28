@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5183995900589112666}
   - component: {fileID: 5183995900589112667}
   - component: {fileID: 5183995900589112668}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105,7 +105,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5183995901070540969}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Buildings
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -197,7 +197,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5183995901602192641}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: TileMeshes
   m_TagString: Untagged
   m_Icon: {fileID: 0}

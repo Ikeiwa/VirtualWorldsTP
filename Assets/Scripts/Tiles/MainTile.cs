@@ -54,52 +54,32 @@ public class MainTile : MonoBehaviour
         //connection up
         if (Random.value < 0.25f)
         {
-            MainTile next = TileManager.GetTileAt(tilePos + Vector2Int.up);
-
-            if (next == null || (next != null && next.connections[Vector2Int.down] == false))
-            {
-                boundNE.SnapTo(boundNW);
-                closedConnections++;
-                connections[Vector2Int.up] = false;
-            }
+            boundNE.SnapTo(boundNW);
+            closedConnections++;
+            connections[Vector2Int.up] = false;
         }
 
         //connection left
         if (Random.value < 0.25f)
         {
-            MainTile next = TileManager.GetTileAt(tilePos + Vector2Int.left);
-
-            if (next == null || (next != null && next.connections[Vector2Int.right] == false))
-            {
-                boundNW.SnapTo(boundSW);
-                closedConnections++;
-                connections[Vector2Int.left] = false;
-            }
+            boundNW.SnapTo(boundSW);
+            closedConnections++;
+            connections[Vector2Int.left] = false;
         }
 
         //connection down
         if (Random.value< 0.25f)
         {
-            MainTile next = TileManager.GetTileAt(tilePos + Vector2Int.down);
-
-            if (next == null || (next != null && next.connections[Vector2Int.up] == false))
-            {
-                boundSW.SnapTo(boundSE);
-                closedConnections++;
-                connections[Vector2Int.down] = false;
-            }
+            boundSW.SnapTo(boundSE);
+            closedConnections++;
+            connections[Vector2Int.down] = false;
         }
 
         //connection right
         if (Random.value < 0.25f && closedConnections < 3)
         {
-            MainTile next = TileManager.GetTileAt(tilePos + Vector2Int.right);
-
-            if (next == null || (next != null && next.connections[Vector2Int.left] == false))
-            {
-                boundSE.SnapTo(boundNE);
-                connections[Vector2Int.right] = false;
-            }
+            boundSE.SnapTo(boundNE);
+            connections[Vector2Int.right] = false;
         }
         
         SpawnBuilding(boundNE);
