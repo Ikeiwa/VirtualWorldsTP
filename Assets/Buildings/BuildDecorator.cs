@@ -39,7 +39,11 @@ public static class BuildDecorator
 
     }
 
-    public static void AddAntenasCluster(List<CombineInstance> combine, float x, float y, float z, float sizeX, float sizeZ)
+    public static void AddAntenasCluster(List<CombineInstance> combine, float x, float y, float z, float sizeX, float sizeZ) {
+        AddAntenasCluster(combine,x,y,z,sizeX, sizeZ,15);
+    }
+
+    public static void AddAntenasCluster(List<CombineInstance> combine, float x, float y, float z, float sizeX, float sizeZ, int amount)
     {
         Mesh cube = PrimitiveFactory.GetMesh(PrimitiveType.Cube);
         Mesh rod = PrimitiveFactory.GetMesh(PrimitiveType.TriPrism);
@@ -51,7 +55,7 @@ public static class BuildDecorator
             transform = Matrix4x4.TRS(new Vector3(x + (sizeX / 2), y + 0.015f, z + (sizeZ / 2)), Quaternion.identity, new Vector3(sizeX, 0.03f, sizeZ))
         });
 
-        for (int i = 0; i < 15; ++i)
+        for (int i = 0; i < amount; ++i)
         {
             bool big = Random.Range(0f, 1f) > 0.9f;
             float antenaheight = Random.Range(0.4f, 1.5f), antenaPosX = Random.Range(0f, sizeX), antenaPosZ = Random.Range(0f, sizeZ);
