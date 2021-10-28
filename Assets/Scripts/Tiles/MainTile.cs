@@ -26,11 +26,11 @@ public class MainTile : MonoBehaviour
 
     private IEnumerator PopulateTile()
     {
-        for (int x = 0; x < 10; x++)
+        for (int x = 0; x < 6; x++)
         {
-            for (int y = 0; y < 10; y++)
+            for (int y = 0; y < 6; y++)
             {
-                SpawnBuilding(new Vector3(x*10,0,y*10),5,5);
+                SpawnBuilding(new Vector3(x*15.5f,0,y*15.5f),13f,13f);
                 yield return new WaitForEndOfFrame();
             }
         }
@@ -41,7 +41,7 @@ public class MainTile : MonoBehaviour
         GameObject building = Instantiate(buildingPrefab, buildingRoot);
         building.transform.localPosition =  position - new Vector3(sizeX/2, 0, sizeY/2);
 
-        Mesh buildingMesh = composer.ComposeNew(MetaBuildingType.BrutalTower, sizeX, sizeY);
+        Mesh buildingMesh = composer.ComposeNew((MetaBuildingType)UnityEngine.Random.Range(1, 3), sizeX, sizeY);
 
         building.GetComponent<MeshFilter>().sharedMesh = buildingMesh;
         building.GetComponent<MeshCollider>().sharedMesh = buildingMesh;
