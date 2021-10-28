@@ -113,7 +113,7 @@ public class MainTile : MonoBehaviour
         GameObject building = Instantiate(buildingPrefab, buildingRoot);
         building.transform.localPosition = new Vector3(bounds.center.x,0,bounds.center.y)  - new Vector3(bounds.extend.x, 0, bounds.extend.y);
 
-        Mesh buildingMesh = composer.ComposeNew(MetaBuildingType.BrutalTower, bounds.size.x, bounds.size.y);
+        Mesh buildingMesh = composer.ComposeNew((MetaBuildingType)UnityEngine.Random.Range(1, 3), bounds.size.x, bounds.size.y);
 
         building.GetComponent<MeshFilter>().sharedMesh = buildingMesh;
         building.GetComponent<MeshCollider>().sharedMesh = buildingMesh;
