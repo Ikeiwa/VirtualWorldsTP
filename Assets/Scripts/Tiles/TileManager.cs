@@ -18,7 +18,7 @@ public class TileManager : MonoBehaviour
     {
         tiles = new List<MainTile>();
         lastPlayerTile = GetPlayerPos();
-        UpdateTiles();
+        StartCoroutine(UpdateTiles());
     }
 
     // Update is called once per frame
@@ -27,7 +27,7 @@ public class TileManager : MonoBehaviour
         currentPlayerTile = GetPlayerPos();
         if (currentPlayerTile != lastPlayerTile)
         {
-            UpdateTiles();
+            StartCoroutine(UpdateTiles());
             lastPlayerTile = currentPlayerTile;
         }
     }
@@ -46,7 +46,7 @@ public class TileManager : MonoBehaviour
         return GetTilePosition(playerPos);
     }
 
-    private void UpdateTiles()
+    private IEnumerator UpdateTiles()
     {
         int halfView = Mathf.FloorToInt(viewDistance / 2.0f);
 
@@ -55,6 +55,7 @@ public class TileManager : MonoBehaviour
             for (int y = 0; y < viewDistance; y++)
             {
                 SpawnTile(x-halfView+currentPlayerTile.x, y-halfView+currentPlayerTile.y);
+                yield return new WaitForEndOfFrame();
             }
         }
 
