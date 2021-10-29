@@ -118,7 +118,7 @@ public class BuildingComposer
 
     private Mesh ComposeDarkLordHQ(float sizeX, float sizeZ)
     {
-        Mesh cyl = PrimitiveFactory.GetMesh(PrimitiveType.Cylindre);
+        Mesh cyl = PrimitiveFactory.GetMesh(PrimitiveType.OctoPrism);
         Mesh cube = PrimitiveFactory.GetMesh(PrimitiveType.Cube);
         Mesh penta = PrimitiveFactory.GetMesh(PrimitiveType.PentaPrism);
         Mesh sphere = PrimitiveFactory.GetMesh(PrimitiveType.Sphere);
@@ -204,7 +204,6 @@ public class BuildingComposer
     private Mesh ComposeEmpireBuilding(float sizeX, float sizeZ)
     {
         Mesh cube = PrimitiveFactory.GetMesh(PrimitiveType.Cube);
-        float height = UniversalFloorSize * (rand.Next(3) + 10);
         List<CombineInstance> combine = new List<CombineInstance>(20);
         combine.Add(new CombineInstance // Base
         {
@@ -217,7 +216,7 @@ public class BuildingComposer
         float highest = 0, highestX = 0, highestZ = 0;
         for (int i = 0; i < buildamount; ++i)
         {
-            float localheight = (rand.Next(5) + 3) * UniversalFloorSize + (float)rand.NextDouble();
+            float localheight = (rand.Next(10) + 3) * UniversalFloorSize + (float)rand.NextDouble();
             float localSizeX = (float)rand.NextDouble() * (sizeX * 0.8f) + 1, localSizeZ = (float)rand.NextDouble() * (sizeZ * 0.8f) + 1;
             float offsetLocaleX = (float)rand.NextDouble() * (sizeX - localSizeX) + localSizeX / 2, offsetLocaleZ = (float)rand.NextDouble() * (sizeZ - localSizeZ) + localSizeZ / 2;
             if (localheight > highest)
