@@ -32,7 +32,7 @@ public class CylindreBuilder {
             var radius = v * (bottomRadius - topRadius) + topRadius;
 
             for (int x = 0; x <= radialSegments; x++) {
-                float u = (float)x / (float)radialSegments;
+                float u = ((float)x+0.5f) / (float)radialSegments;
 
                 var vertex = new Vector3();
                 vertex.x = radius * Mathf.Sin(u * Mathf.PI * 2.0f);
