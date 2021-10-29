@@ -112,13 +112,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34ac84687eac703468ed8a5b1c12e46e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseSensitivityX: 3
-  mouseSensitivityY: 3
-  walkSpeed: 7500
-  jumpForce: 5
-  groundFriction: 5
-  airFriction: 0.5
-  airControl: 0.1
+  mouseSensitivity: 3
+  MovementSpeed: 7
+  AccelRate: 20
+  DecelRate: 20
+  AirborneAccel: 20
+  JumpSpeed: 7
+  FudgeExtra: 0.5
+  MaximumSlope: 45
   groundedMask:
     serializedVersion: 2
     m_Bits: 1
