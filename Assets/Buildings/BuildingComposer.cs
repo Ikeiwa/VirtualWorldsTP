@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>Meta type of building, generable by a <c>BuildingComposer</c></summary>
 public enum MetaBuildingType
 {
-    Debug, BrutalTower, DarkLordHQ
+    Debug, BrutalTower, DarkLordHQ, EmpireBuilding
 }
 
 /// <summary>A<c>BuildingComposer</c> is an object that creates buildings for a set area. 
@@ -35,6 +35,7 @@ public class BuildingComposer
         {
             case MetaBuildingType.BrutalTower: return ComposeBrutalTower(sizeX, sizeZ);
             case MetaBuildingType.DarkLordHQ: return ComposeDarkLordHQ(sizeX, sizeZ);
+            case MetaBuildingType.EmpireBuilding: return ComposeEmpireBuilding(sizeX, sizeZ);
             default: return ComposeDebug(sizeX, sizeZ);
         }
     }
@@ -190,10 +191,50 @@ public class BuildingComposer
             {
                 mesh = cube,
                 subMeshIndex = 0,
-                transform = Matrix4x4.TRS(new Vector3(sizeX / 4 * 3 + 1, UniversalFloorSize / 2, sizeZ / 4 * 3 +1), Quaternion.identity, new Vector3(1.7f, UniversalFloorSize, 1.7f))
+                transform = Matrix4x4.TRS(new Vector3(sizeX / 4 * 3 + 1, UniversalFloorSize / 2, sizeZ / 4 * 3 + 1), Quaternion.identity, new Vector3(1.7f, UniversalFloorSize, 1.7f))
             });
-            BuildDecorator.AddAntenasCluster(combine, sizeX / 4 * 3,  UniversalFloorSize, sizeZ / 4 * 3, 2, 2);
+            BuildDecorator.AddAntenasCluster(combine, sizeX / 4 * 3, UniversalFloorSize, sizeZ / 4 * 3, 2, 2);
         }
+
+        Mesh toreturn = new Mesh();
+        toreturn.CombineMeshes(combine.ToArray(), true, true, false);
+        return toreturn;
+    }
+
+    private Mesh ComposeEmpireBuilding(float sizeX, float sizeZ)
+    {
+        Mesh cube = PrimitiveFactory.GetMesh(PrimitiveType.Cube);
+        float height = UniversalFloorSize * (rand.Next(3) + 10);
+        List<CombineInstance> combine = new List<CombineInstance>(20);
+        combine.Add(new CombineInstance // Base
+        {
+            mesh = cube,
+            subMeshIndex = 0,
+            transform = Matrix4x4.TRS(new Vector3(sizeX / 2, 0.05f, sizeZ / 2), Quaternion.identity, new Vector3(sizeX, 0.1f, sizeZ))
+        });
+
+        int buildamount = rand.Next(5) + 4;
+        float highest = 0, highestX = 0, highestZ = 0;
+        for (int i = 0; i < buildamount; ++i)
+        {
+            float localheight = (rand.Next(5) + 3) * UniversalFloorSize + (float)rand.NextDouble();
+            float localSizeX = (float)rand.NextDouble() * (sizeX * 0.8f) + 1, localSizeZ = (float)rand.NextDouble() * (sizeZ * 0.8f) + 1;
+            float offsetLocaleX = (float)rand.NextDouble() * (sizeX - localSizeX) + localSizeX / 2, offsetLocaleZ = (float)rand.NextDouble() * (sizeZ - localSizeZ) + localSizeZ / 2;
+            if (localheight > highest)
+            {
+                highest = localheight;
+                highestX = offsetLocaleX;
+                highestZ = offsetLocaleZ;
+            }
+            combine.Add(new CombineInstance // Base
+            {
+                mesh = cube,
+                subMeshIndex = 0,
+                transform = Matrix4x4.TRS(new Vector3(offsetLocaleX, localheight / 2, offsetLocaleZ), Quaternion.identity, new Vector3(localSizeX, localheight, localSizeZ))
+            });
+        }
+
+        BuildDecorator.AddAntenasCluster(combine, highestX - 0.6f, highest, highestZ - 0.6f, 1.2f, 1.2f, 5);
 
         Mesh toreturn = new Mesh();
         toreturn.CombineMeshes(combine.ToArray(), true, true, false);
