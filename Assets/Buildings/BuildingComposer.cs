@@ -31,14 +31,24 @@ public class BuildingComposer
     /// as calls iterate the inner random generator. THe returned mesh's vertices are all between 0 and size parameters.</summary>
     public Mesh ComposeNew(MetaBuildingType type, float sizeX, float sizeZ)
     {
-        switch (type)
+        Mesh toreturn = type switch
         {
-            case MetaBuildingType.BrutalTower: return ComposeBrutalTower(sizeX, sizeZ);
-            case MetaBuildingType.DarkLordHQ: return ComposeDarkLordHQ(sizeX, sizeZ);
-            case MetaBuildingType.EmpireBuilding: return ComposeEmpireBuilding(sizeX, sizeZ);
-            case MetaBuildingType.Hive: return ComposeHive(sizeX, sizeZ);
-            default: return ComposeDebug(sizeX, sizeZ);
+            MetaBuildingType.BrutalTower => ComposeBrutalTower(sizeX, sizeZ),
+            MetaBuildingType.DarkLordHQ => ComposeDarkLordHQ(sizeX, sizeZ),
+            MetaBuildingType.EmpireBuilding => ComposeEmpireBuilding(sizeX, sizeZ),
+            MetaBuildingType.Hive => ComposeHive(sizeX, sizeZ),
+            _ => ComposeDebug(sizeX, sizeZ)
+        };
+
+        Vector2[] uvs = new Vector2[toreturn.vertices.Length];
+        float scaler = 44.5f;
+        for (var i = 0; i < toreturn.vertices.Length; i++) {
+            uvs[i] = new Vector2((toreturn.vertices[i].x + toreturn.vertices[i].z) / scaler, toreturn.vertices[i].y / scaler);
         }
+
+        toreturn.uv = uvs;
+
+        return toreturn;
     }
 
     private Mesh ComposeDebug(float sizeX, float sizeZ)
