@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>Meta type of building, generable by a <c>BuildingComposer</c></summary>
 public enum MetaBuildingType
 {
-    Debug, BrutalTower, DarkLordHQ, EmpireBuilding
+    Debug, BrutalTower, DarkLordHQ, EmpireBuilding, Hive
 }
 
 /// <summary>A<c>BuildingComposer</c> is an object that creates buildings for a set area. 
@@ -36,6 +36,7 @@ public class BuildingComposer
             case MetaBuildingType.BrutalTower: return ComposeBrutalTower(sizeX, sizeZ);
             case MetaBuildingType.DarkLordHQ: return ComposeDarkLordHQ(sizeX, sizeZ);
             case MetaBuildingType.EmpireBuilding: return ComposeEmpireBuilding(sizeX, sizeZ);
+            case MetaBuildingType.Hive: return ComposeHive(sizeX, sizeZ);
             default: return ComposeDebug(sizeX, sizeZ);
         }
     }
@@ -176,7 +177,7 @@ public class BuildingComposer
                 transform = Matrix4x4.TRS(new Vector3((sizeX / 3), 0.01f + height, (sizeZ / 3) * 2), Quaternion.identity, new Vector3((sizeX / 3 * 2) * 0.4f, height / 2, (sizeZ - 1f) * 0.6f))
             });
         // Ball on top
-        if (toptype == 0)
+        if (toptype == 0 && rand.Next(2) == 1)
             combine.Add(new CombineInstance
             {
                 mesh = sphere,
@@ -234,6 +235,58 @@ public class BuildingComposer
         }
 
         BuildDecorator.AddAntenasCluster(combine, highestX - 0.6f, highest, highestZ - 0.6f, 1.2f, 1.2f, 5);
+
+        Mesh toreturn = new Mesh();
+        toreturn.CombineMeshes(combine.ToArray(), true, true, false);
+        return toreturn;
+    }
+
+    private Mesh ComposeHive(float sizeX, float sizeZ)
+    {
+        Mesh cube = PrimitiveFactory.GetMesh(PrimitiveType.Cube);
+        Mesh sphere = PrimitiveFactory.GetMesh(PrimitiveType.Sphere);
+        List<CombineInstance> combine = new List<CombineInstance>(20);
+        combine.Add(new CombineInstance // Base
+        {
+            mesh = cube,
+            subMeshIndex = 0,
+            transform = Matrix4x4.TRS(new Vector3(sizeX / 2, 0.05f, sizeZ / 2), Quaternion.identity, new Vector3(sizeX, 0.1f, sizeZ))
+        });
+        int divisionsX = 3 + rand.Next(2), divisionsZ = 3 + rand.Next(2), floors = rand.Next(5) + 4;
+        float lenSideX = sizeX / divisionsX, lenSideZ = sizeZ / divisionsZ;
+        for (int floor = 0; floor < floors; floor++)
+        {
+            combine.Add(new CombineInstance // Base
+            {
+                mesh = cube,
+                subMeshIndex = 0,
+                transform = Matrix4x4.TRS(
+                    new Vector3(sizeX / 2, UniversalFloorSize + floor * UniversalFloorSize * 2, sizeZ / 2),
+                    Quaternion.identity,
+                    new Vector3(sizeX - 1.5f, UniversalFloorSize * 2 - 1.2f, sizeZ - 1.5f))
+            });
+            for (int x = 0; x < divisionsX; x++)
+                for (int z = 0; z < divisionsZ; z++)
+                {
+                    if (rand.Next(8) != 5)
+                        combine.Add(new CombineInstance // Base
+                        {
+                            mesh = cube,
+                            subMeshIndex = 0,
+                            transform = Matrix4x4.TRS(
+                                new Vector3(lenSideX / 2 + x * lenSideX, UniversalFloorSize + floor * UniversalFloorSize * 2,
+                                    lenSideZ / 2 + z * lenSideZ), Quaternion.identity,
+                                new Vector3(lenSideX - 0.9f, UniversalFloorSize * 2 - 0.6f, lenSideZ - 0.9f))
+                        });
+                }
+        }
+
+        combine.Add(new CombineInstance // Base
+        {
+            mesh = sphere,
+            subMeshIndex = 0,
+            transform = Matrix4x4.TRS(new Vector3(sizeX / 2, 0.05f, sizeZ / 2), Quaternion.identity, new Vector3(sizeX / 2.6f, (floors - 1 + (float)rand.NextDouble() * 2) * UniversalFloorSize * 2, sizeZ / 2.6f))
+        });
 
         Mesh toreturn = new Mesh();
         toreturn.CombineMeshes(combine.ToArray(), true, true, false);
