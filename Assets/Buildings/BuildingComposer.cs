@@ -40,9 +40,10 @@ public class BuildingComposer
             _ => ComposeDebug(sizeX, sizeZ)
         };
 
-        Vector2[] uvs = new Vector2[toreturn.vertices.Length]; // Create array with the same element count
+        Vector2[] uvs = new Vector2[toreturn.vertices.Length];
+        float scaler = 44.5f;
         for (var i = 0; i < toreturn.vertices.Length; i++) {
-            uvs[i] = new Vector2(toreturn.vertices[i].x + toreturn.vertices[i].z, toreturn.vertices[i].y);
+            uvs[i] = new Vector2((toreturn.vertices[i].x + toreturn.vertices[i].z) / scaler, toreturn.vertices[i].y / scaler);
         }
 
         toreturn.uv = uvs;
