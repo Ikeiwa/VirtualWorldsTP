@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: f145cb62e0ef15743b229b5c0fecb268
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures:
+  - _WindowAlbedo: {fileID: 2800000, guid: a985edae5a54a5d4fa8f504a92ef089a, type: 3}
+  - _WindowRMW: {fileID: 2800000, guid: c5ae30daa540eec498b91d1b71491c1b, type: 3}
+  - _WindowNormal: {fileID: 2800000, guid: ef0f23e628149fe459656d6637a7e820, type: 3}
+  - _AlbedoAtlas: {fileID: 2800000, guid: 9badbe3565d8d814d85d7ef0cc5f1c48, type: 3}
+  - _DecorationAtlas: {fileID: 2800000, guid: 143c2914007ede9448f41494642ba305, type: 3}
+  nonModifiableTextures: []
+  preprocessorOverride: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
