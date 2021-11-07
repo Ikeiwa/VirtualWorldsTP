@@ -9,7 +9,7 @@ public class BuildTesterMono : MonoBehaviour
 
     private bool buildingchanged = true;
     [SerializeField]
-    private MetaBuildingType type = MetaBuildingType.BrutalTower;
+    private MetaBuildingType type = MetaBuildingType.Hive;
     private MetaBuildingType typelast;
     private float lastinvalidate;
 
