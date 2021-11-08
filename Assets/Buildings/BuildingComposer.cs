@@ -41,9 +41,11 @@ public class BuildingComposer
         };
 
         Vector2[] uvs = new Vector2[toreturn.vertices.Length];
-        float scaler = 44.5f;
-        for (var i = 0; i < toreturn.vertices.Length; i++) {
-            uvs[i] = new Vector2((toreturn.vertices[i].x + toreturn.vertices[i].z) / scaler, toreturn.vertices[i].y / scaler);
+        float scaler = 16f * UniversalFloorSize;
+        for (var i = 0; i < toreturn.vertices.Length; i++)
+        {
+            float lx = toreturn.vertices[i].x / sizeX, lz = toreturn.vertices[i].z / sizeZ;
+            uvs[i] = new Vector2((lx + lz) / 2, toreturn.vertices[i].y / scaler);
         }
 
         toreturn.uv = uvs;
