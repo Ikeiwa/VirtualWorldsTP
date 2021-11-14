@@ -57,47 +57,27 @@ public class BuildingComposer
 
     private Mesh ComposeDebug(float sizeX, float sizeZ)
     {
-        Mesh bse = PrimitiveFactory.GetMesh(PrimitiveType.Cube);
         Mesh m1 = PrimitiveFactory.GetMesh(PrimitiveType.Cube);
         Mesh m2 = PrimitiveFactory.GetMesh(PrimitiveType.RoofDouble);
 
-        CombineInstance[] combine = new CombineInstance[3];
+        var combine = GenCombineList();
 
-        combine[0] = new CombineInstance
-        {
-            mesh = m1,
-            subMeshIndex = 0,
-            transform = Matrix4x4.TRS(new Vector3(sizeX / 2, 0.05f, sizeZ / 2), Quaternion.identity, new Vector3(sizeX, 0.1f, sizeZ))
-        };
-        combine[1] = new CombineInstance
-        {
-            mesh = m1,
-            subMeshIndex = 0,
-            transform = Matrix4x4.TRS(new Vector3(sizeX / 2, 0.6f, sizeZ / 2), Quaternion.identity, new Vector3(1, 1, 1))
-        };
-        combine[2] = new CombineInstance
-        {
-            mesh = m2,
-            subMeshIndex = 0,
-            transform = Matrix4x4.TRS(new Vector3(sizeX / 2, 1.6f, sizeZ / 2), Quaternion.identity, new Vector3(1.5f, 1, 1))
-        };
+        //Base
+        CombineAdd(combine[0], m1, new Vector3(sizeX / 2, 0.05f, sizeZ / 2), new Vector3(sizeX, 0.1f, sizeZ));
 
-        Mesh toreturn = new Mesh();
-        toreturn.CombineMeshes(combine, true, true, false);
-        return toreturn;
+        CombineAdd(combine[0], m1, new Vector3(sizeX / 2, 0.6f, sizeZ / 2), new Vector3(1, 1, 1));
+        CombineAdd(combine[0], m2, new Vector3(sizeX / 2, 1.6f, sizeZ / 2), new Vector3(1.5f, 1, 1));
+
+        return ComputeCombine(combine);
     }
 
     private Mesh ComposeBrutalTower(float sizeX, float sizeZ)
     {
         Mesh cube = PrimitiveFactory.GetMesh(PrimitiveType.Cube);
 
-        List<CombineInstance> combine = new List<CombineInstance>(20);
-        combine.Add(new CombineInstance // Base
-        {
-            mesh = cube,
-            subMeshIndex = 0,
-            transform = Matrix4x4.TRS(new Vector3(sizeX / 2, 0.05f, sizeZ / 2), Quaternion.identity, new Vector3(sizeX, 0.1f, sizeZ))
-        });
+        var combine = GenCombineList(20);
+        //Base
+        CombineAdd(combine[0], cube, new Vector3(sizeX / 2, 0.05f, sizeZ / 2), new Vector3(sizeX, 0.1f, sizeZ));
 
         int notgenerated = rand.Next(5);
 
@@ -105,30 +85,28 @@ public class BuildingComposer
         {
             float sizeLocalX = (float)rand.NextDouble() * (sizeX / 2.2f) + sizeX / 4f,
                 sizeLocalZ = (float)rand.NextDouble() * (sizeZ / 2.5f) + sizeX / 4f;
-            BuildDecorator.addBrutalSegment(combine, 0.3f, 0.3f, sizeLocalX, sizeLocalZ, rand.Next(5) + 1);
+            BuildDecorator.addBrutalSegment(combine[0], 0.3f, 0.3f, sizeLocalX, sizeLocalZ, rand.Next(5) + 1);
         }
         if (notgenerated != 1)
         {
             float sizeLocalX = (float)rand.NextDouble() * (sizeX / 2.2f) + sizeX / 4f,
                 sizeLocalZ = (float)rand.NextDouble() * (sizeZ / 2.5f) + sizeX / 4f;
-            BuildDecorator.addBrutalSegment(combine, sizeX - sizeLocalX - 0.15f, 0.1f, sizeLocalX, sizeLocalZ, rand.Next(3) + 1);
+            BuildDecorator.addBrutalSegment(combine[0], sizeX - sizeLocalX - 0.15f, 0.1f, sizeLocalX, sizeLocalZ, rand.Next(3) + 1);
         }
         if (notgenerated != 2)
         {
             float sizeLocalX = (float)rand.NextDouble() * (sizeX / 2.2f) + sizeX / 4f,
                 sizeLocalZ = (float)rand.NextDouble() * (sizeZ / 2.5f) + sizeX / 4f;
-            BuildDecorator.addBrutalSegment(combine, 0.2f, sizeZ - sizeLocalZ - 0.15f, sizeLocalX, sizeLocalZ, rand.Next(3) + 2);
+            BuildDecorator.addBrutalSegment(combine[0], 0.2f, sizeZ - sizeLocalZ - 0.15f, sizeLocalX, sizeLocalZ, rand.Next(3) + 2);
         }
         if (notgenerated != 3)
         {
             float sizeLocalX = (float)rand.NextDouble() * (sizeX / 2.2f) + sizeX / 4f,
                 sizeLocalZ = (float)rand.NextDouble() * (sizeZ / 2.5f) + sizeX / 4f;
-            BuildDecorator.addBrutalSegment(combine, sizeX - sizeLocalX - 0.17f, sizeZ - sizeLocalZ - 0.17f, sizeLocalX, sizeLocalZ, rand.Next(4) + 2);
+            BuildDecorator.addBrutalSegment(combine[0], sizeX - sizeLocalX - 0.17f, sizeZ - sizeLocalZ - 0.17f, sizeLocalX, sizeLocalZ, rand.Next(4) + 2);
         }
 
-        Mesh toreturn = new Mesh();
-        toreturn.CombineMeshes(combine.ToArray(), true, true, false);
-        return toreturn;
+        return ComputeCombine(combine);
     }
 
     private Mesh ComposeDarkLordHQ(float sizeX, float sizeZ)
@@ -139,93 +117,44 @@ public class BuildingComposer
         Mesh sphere = PrimitiveFactory.GetMesh(PrimitiveType.Sphere);
 
         float height = UniversalFloorSize * (rand.Next(3) + 10);
-        List<CombineInstance> combine = new List<CombineInstance>(20);
-        combine.Add(new CombineInstance // Base
-        {
-            mesh = cube,
-            subMeshIndex = 0,
-            transform = Matrix4x4.TRS(new Vector3(sizeX / 2, 0.05f, sizeZ / 2), Quaternion.identity, new Vector3(sizeX, 0.1f, sizeZ))
-        });
+        var combine = GenCombineList();
+        //Base
+        CombineAdd(combine[0], cube, new Vector3(sizeX / 2, 0.05f, sizeZ / 2), new Vector3(sizeX, 0.1f, sizeZ));
 
         // Main cylindre
-        combine.Add(new CombineInstance
-        {
-            mesh = cyl,
-            subMeshIndex = 0,
-            transform = Matrix4x4.TRS(new Vector3((sizeX / 3), 0.01f + height / 2, (sizeZ / 2)), Quaternion.identity, new Vector3(sizeX / 3 * 2, height, sizeZ - 1f))
-        });
-        combine.Add(new CombineInstance
-        {
-            mesh = cyl,
-            subMeshIndex = 0,
-            transform = Matrix4x4.TRS(new Vector3((sizeX / 3), 0.1f + UniversalFloorSize, (sizeZ / 2)), Quaternion.identity, new Vector3(sizeX / 3 * 2 + 0.4f, 0.3f, sizeZ - 0.6f))
-        });
+        CombineAdd(combine[0], cyl, new Vector3((sizeX / 3), 0.01f + height / 2, (sizeZ / 2)), new Vector3(sizeX / 3 * 2, height, sizeZ - 1f));
+        CombineAdd(combine[0], cyl, new Vector3((sizeX / 3), 0.1f + UniversalFloorSize, (sizeZ / 2)), new Vector3(sizeX / 3 * 2 + 0.4f, 0.3f, sizeZ - 0.6f));
         // Entrance
-        combine.Add(new CombineInstance
-        {
-            mesh = penta,
-            subMeshIndex = 0,
-            transform = Matrix4x4.TRS(new Vector3((sizeX / 3) * 2, 0.01f + UniversalFloorSize / 2, (sizeZ / 4)), Quaternion.identity, new Vector3(sizeX / 3 * 2, UniversalFloorSize, sizeZ / 4))
-        });
-        combine.Add(new CombineInstance
-        {
-            mesh = penta,
-            subMeshIndex = 0,
-            transform = Matrix4x4.TRS(new Vector3((sizeX / 3) * 2, 0.01f + UniversalFloorSize, (sizeZ / 4)), Quaternion.identity, new Vector3(sizeX / 3 * 2 + 0.4f, 0.3f, sizeZ / 4 + 0.4f))
-        });
+        CombineAdd(combine[0], penta, new Vector3((sizeX / 3) * 2, 0.01f + UniversalFloorSize / 2, (sizeZ / 4)), new Vector3(sizeX / 3 * 2, UniversalFloorSize, sizeZ / 4));
+        CombineAdd(combine[0], penta, new Vector3((sizeX / 3) * 2, 0.01f + UniversalFloorSize, (sizeZ / 4)), new Vector3(sizeX / 3 * 2 + 0.4f, 0.3f, sizeZ / 4 + 0.4f));
 
         int toptype = rand.Next(3);
         // Building Top
         if (toptype == 0 || toptype == 1)
-            combine.Add(new CombineInstance
-            {
-                mesh = cyl,
-                subMeshIndex = 0,
-                transform = Matrix4x4.TRS(new Vector3((sizeX / 3), 0.01f + height, sizeZ / 3), Quaternion.identity, new Vector3((sizeX / 3 * 2) * 0.4f, height / 2, (sizeZ - 1f) * 0.4f))
-            });
+            CombineAdd(combine[0], cyl, new Vector3((sizeX / 3), 0.01f + height, sizeZ / 3), new Vector3((sizeX / 3 * 2) * 0.4f, height / 2, (sizeZ - 1f) * 0.4f));
         if (toptype == 0 || toptype == 2)
-            combine.Add(new CombineInstance
-            {
-                mesh = cyl,
-                subMeshIndex = 0,
-                transform = Matrix4x4.TRS(new Vector3((sizeX / 3), 0.01f + height, (sizeZ / 3) * 2), Quaternion.identity, new Vector3((sizeX / 3 * 2) * 0.4f, height / 2, (sizeZ - 1f) * 0.6f))
-            });
+            CombineAdd(combine[0], cyl, new Vector3((sizeX / 3), 0.01f + height, (sizeZ / 3) * 2), new Vector3((sizeX / 3 * 2) * 0.4f, height / 2, (sizeZ - 1f) * 0.6f));
         // Ball on top
         if (toptype == 0 && rand.Next(2) == 1)
-            combine.Add(new CombineInstance
-            {
-                mesh = sphere,
-                subMeshIndex = 0,
-                transform = Matrix4x4.TRS(new Vector3((sizeX / 3), height * 1.25f, sizeZ / 2), Quaternion.identity, new Vector3((sizeX / 3 * 2) * 0.3f, UniversalFloorSize / 2.5f, (sizeZ - 1f) * 0.5f))
-            });
+            CombineAdd(combine[0], sphere, new Vector3((sizeX / 3), height * 1.25f, sizeZ / 2), new Vector3((sizeX / 3 * 2) * 0.3f, UniversalFloorSize / 2.5f, (sizeZ - 1f) * 0.5f));
         // Add antenas
         int antenas = rand.Next(3);
         if (antenas == 1)
         {
-            combine.Add(new CombineInstance
-            {
-                mesh = cube,
-                subMeshIndex = 0,
-                transform = Matrix4x4.TRS(new Vector3(sizeX / 4 * 3 + 1, UniversalFloorSize / 2, sizeZ / 4 * 3 + 1), Quaternion.identity, new Vector3(1.7f, UniversalFloorSize, 1.7f))
-            });
-            BuildDecorator.AddAntenasCluster(combine, sizeX / 4 * 3, UniversalFloorSize, sizeZ / 4 * 3, 2, 2);
+            CombineAdd(combine[0], cube, new Vector3(sizeX / 4 * 3 + 1, UniversalFloorSize / 2, sizeZ / 4 * 3 + 1), new Vector3(1.7f, UniversalFloorSize, 1.7f));
+            BuildDecorator.AddAntenasCluster(combine[0], sizeX / 4 * 3, UniversalFloorSize, sizeZ / 4 * 3, 2, 2);
         }
 
-        Mesh toreturn = new Mesh();
-        toreturn.CombineMeshes(combine.ToArray(), true, true, false);
-        return toreturn;
+        return ComputeCombine(combine);
     }
 
     private Mesh ComposeEmpireBuilding(float sizeX, float sizeZ)
     {
         Mesh cube = PrimitiveFactory.GetMesh(PrimitiveType.Cube);
-        List<CombineInstance> combine = new List<CombineInstance>(20);
-        combine.Add(new CombineInstance // Base
-        {
-            mesh = cube,
-            subMeshIndex = 0,
-            transform = Matrix4x4.TRS(new Vector3(sizeX / 2, 0.05f, sizeZ / 2), Quaternion.identity, new Vector3(sizeX, 0.1f, sizeZ))
-        });
+        var combine = GenCombineList();
+
+        //Base
+        CombineAdd(combine[0], cube, new Vector3(sizeX / 2, 0.05f, sizeZ / 2), new Vector3(sizeX, 0.1f, sizeZ));
 
         int buildamount = rand.Next(5) + 4;
         float highest = 0, highestX = 0, highestZ = 0;
@@ -240,71 +169,82 @@ public class BuildingComposer
                 highestX = offsetLocaleX;
                 highestZ = offsetLocaleZ;
             }
-            combine.Add(new CombineInstance // Base
-            {
-                mesh = cube,
-                subMeshIndex = 0,
-                transform = Matrix4x4.TRS(new Vector3(offsetLocaleX, localheight / 2, offsetLocaleZ), Quaternion.identity, new Vector3(localSizeX, localheight, localSizeZ))
-            });
+
+            CombineAdd(combine[0], cube, new Vector3(offsetLocaleX, localheight / 2, offsetLocaleZ),
+                new Vector3(localSizeX, localheight, localSizeZ));
+
         }
 
-        BuildDecorator.AddAntenasCluster(combine, highestX - 0.6f, highest, highestZ - 0.6f, 1.2f, 1.2f, 5);
+        BuildDecorator.AddAntenasCluster(combine[0], highestX - 0.6f, highest, highestZ - 0.6f, 1.2f, 1.2f, 5);
 
-        Mesh toreturn = new Mesh();
-        toreturn.CombineMeshes(combine.ToArray(), true, true, false);
-        return toreturn;
+        return ComputeCombine(combine);
     }
 
     private Mesh ComposeHive(float sizeX, float sizeZ)
     {
         Mesh cube = PrimitiveFactory.GetMesh(PrimitiveType.Cube);
         Mesh sphere = PrimitiveFactory.GetMesh(PrimitiveType.Sphere);
-        List<CombineInstance> combine = new List<CombineInstance>(20);
-        combine.Add(new CombineInstance // Base
-        {
-            mesh = cube,
-            subMeshIndex = 0,
-            transform = Matrix4x4.TRS(new Vector3(sizeX / 2, 0.05f, sizeZ / 2), Quaternion.identity, new Vector3(sizeX, 0.1f, sizeZ))
-        });
+        var combine = GenCombineList();
+
+        //Base
+        CombineAdd(combine[0], cube, new Vector3(sizeX / 2, 0.05f, sizeZ / 2), new Vector3(sizeX, 0.1f, sizeZ));
+
         int divisionsX = 3 + rand.Next(2), divisionsZ = 3 + rand.Next(2), floors = rand.Next(5) + 4;
         float lenSideX = sizeX / divisionsX, lenSideZ = sizeZ / divisionsZ;
         for (int floor = 0; floor < floors; floor++)
         {
-            combine.Add(new CombineInstance // Base
-            {
-                mesh = cube,
-                subMeshIndex = 0,
-                transform = Matrix4x4.TRS(
-                    new Vector3(sizeX / 2, UniversalFloorSize + floor * UniversalFloorSize * 2, sizeZ / 2),
-                    Quaternion.identity,
-                    new Vector3(sizeX - 1.5f, UniversalFloorSize * 2 - 1.2f, sizeZ - 1.5f))
-            });
+            CombineAdd(combine[0], cube, new Vector3(sizeX / 2, UniversalFloorSize + floor * UniversalFloorSize * 2, sizeZ / 2), new Vector3(sizeX - 1.5f, UniversalFloorSize * 2 - 1.2f, sizeZ - 1.5f));
             for (int x = 0; x < divisionsX; x++)
                 for (int z = 0; z < divisionsZ; z++)
                 {
                     if (rand.Next(8) != 5)
-                        combine.Add(new CombineInstance // Base
-                        {
-                            mesh = cube,
-                            subMeshIndex = 0,
-                            transform = Matrix4x4.TRS(
-                                new Vector3(lenSideX / 2 + x * lenSideX, UniversalFloorSize + floor * UniversalFloorSize * 2,
-                                    lenSideZ / 2 + z * lenSideZ), Quaternion.identity,
-                                new Vector3(lenSideX - 0.9f, UniversalFloorSize * 2 - 0.6f, lenSideZ - 0.9f))
-                        });
+                        CombineAdd(combine[0], cube,
+                            new Vector3(lenSideX / 2 + x * lenSideX,
+                                UniversalFloorSize + floor * UniversalFloorSize * 2,
+                                lenSideZ / 2 + z * lenSideZ),
+                            new Vector3(lenSideX - 0.9f, UniversalFloorSize * 2 - 0.6f, lenSideZ - 0.9f));
                 }
         }
 
-        combine.Add(new CombineInstance // Base
-        {
-            mesh = sphere,
-            subMeshIndex = 0,
-            transform = Matrix4x4.TRS(new Vector3(sizeX / 2, 0.05f, sizeZ / 2), Quaternion.identity, new Vector3(sizeX / 2.6f, (floors - 1 + (float)rand.NextDouble() * 2) * UniversalFloorSize * 2, sizeZ / 2.6f))
-        });
+        CombineAdd(combine[0], sphere, new Vector3(sizeX / 2, 0.05f, sizeZ / 2), new Vector3(sizeX / 2.6f, (floors - 1 + (float)rand.NextDouble() * 2) * UniversalFloorSize * 2, sizeZ / 2.6f));
 
+        return ComputeCombine(combine);
+    }
+
+
+    private List<CombineInstance>[] GenCombineList(int size = 8)
+    {
+        return new[] { new List<CombineInstance>(size), new List<CombineInstance>(size) };
+    }
+
+    private static Mesh ComputeCombine(List<CombineInstance>[] combine)
+    {
+        List<CombineInstance> returncombine = new List<CombineInstance>(combine.Length);
+        for (int i = 0; i < combine.Length; i++)
+        {
+            Mesh submesh = new Mesh();
+            submesh.CombineMeshes(combine[i].ToArray(), true, true, false);
+            returncombine.Add(new CombineInstance { mesh = submesh, subMeshIndex = i, transform = Matrix4x4.identity });
+        }
         Mesh toreturn = new Mesh();
-        toreturn.CombineMeshes(combine.ToArray(), true, true, false);
+        toreturn.CombineMeshes(returncombine.ToArray(), false, true, false);
         return toreturn;
     }
+
+    private static void CombineAdd(List<CombineInstance> combine, Mesh geometry, Vector3 pos, Vector3 scale)
+    {
+        CombineAdd(combine, geometry, Matrix4x4.TRS(pos, Quaternion.identity, scale));
+    }
+    private static void CombineAdd(List<CombineInstance> combine, Mesh geometry, Matrix4x4 transform)
+    {
+        combine.Add(new CombineInstance
+        {
+            mesh = geometry,
+            subMeshIndex = 0,
+            transform = transform
+        });
+    }
+
+
 
 }
