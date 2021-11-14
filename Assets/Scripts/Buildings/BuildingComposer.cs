@@ -63,7 +63,7 @@ public class BuildingComposer
         var combine = GenCombineList();
 
         //Base
-        CombineAdd(combine[0], m1, new Vector3(sizeX / 2, 0.05f, sizeZ / 2), new Vector3(sizeX, 0.1f, sizeZ));
+        CombineAdd(combine[1], m1, new Vector3(sizeX / 2, 0.05f, sizeZ / 2), new Vector3(sizeX, 0.1f, sizeZ));
 
         CombineAdd(combine[0], m1, new Vector3(sizeX / 2, 0.6f, sizeZ / 2), new Vector3(1, 1, 1));
         CombineAdd(combine[0], m2, new Vector3(sizeX / 2, 1.6f, sizeZ / 2), new Vector3(1.5f, 1, 1));
@@ -77,7 +77,7 @@ public class BuildingComposer
 
         var combine = GenCombineList(20);
         //Base
-        CombineAdd(combine[0], cube, new Vector3(sizeX / 2, 0.05f, sizeZ / 2), new Vector3(sizeX, 0.1f, sizeZ));
+        CombineAdd(combine[1], cube, new Vector3(sizeX / 2, 0.05f, sizeZ / 2), new Vector3(sizeX, 0.1f, sizeZ));
 
         int notgenerated = rand.Next(5);
 
@@ -119,7 +119,7 @@ public class BuildingComposer
         float height = UniversalFloorSize * (rand.Next(3) + 10);
         var combine = GenCombineList();
         //Base
-        CombineAdd(combine[0], cube, new Vector3(sizeX / 2, 0.05f, sizeZ / 2), new Vector3(sizeX, 0.1f, sizeZ));
+        CombineAdd(combine[1], cube, new Vector3(sizeX / 2, 0.05f, sizeZ / 2), new Vector3(sizeX, 0.1f, sizeZ));
 
         // Main cylindre
         CombineAdd(combine[0], cyl, new Vector3((sizeX / 3), 0.01f + height / 2, (sizeZ / 2)), new Vector3(sizeX / 3 * 2, height, sizeZ - 1f));
@@ -154,7 +154,7 @@ public class BuildingComposer
         var combine = GenCombineList();
 
         //Base
-        CombineAdd(combine[0], cube, new Vector3(sizeX / 2, 0.05f, sizeZ / 2), new Vector3(sizeX, 0.1f, sizeZ));
+        CombineAdd(combine[1], cube, new Vector3(sizeX / 2, 0.05f, sizeZ / 2), new Vector3(sizeX, 0.1f, sizeZ));
 
         int buildamount = rand.Next(5) + 4;
         float highest = 0, highestX = 0, highestZ = 0;
@@ -187,7 +187,7 @@ public class BuildingComposer
         var combine = GenCombineList();
 
         //Base
-        CombineAdd(combine[0], cube, new Vector3(sizeX / 2, 0.05f, sizeZ / 2), new Vector3(sizeX, 0.1f, sizeZ));
+        CombineAdd(combine[1], cube, new Vector3(sizeX / 2, 0.05f, sizeZ / 2), new Vector3(sizeX, 0.1f, sizeZ));
 
         int divisionsX = 3 + rand.Next(2), divisionsZ = 3 + rand.Next(2), floors = rand.Next(5) + 4;
         float lenSideX = sizeX / divisionsX, lenSideZ = sizeZ / divisionsZ;
@@ -225,9 +225,11 @@ public class BuildingComposer
             Mesh submesh = new Mesh();
             submesh.CombineMeshes(combine[i].ToArray(), true, true, false);
             returncombine.Add(new CombineInstance { mesh = submesh, subMeshIndex = i, transform = Matrix4x4.identity });
+            Debug.Log("Submesh : " + i + " with " + combine[i].Count + " parts.");
         }
         Mesh toreturn = new Mesh();
         toreturn.CombineMeshes(returncombine.ToArray(), false, true, false);
+
         return toreturn;
     }
 
