@@ -188,6 +188,7 @@ MonoBehaviour:
   buildingRoot: {fileID: 5183995901070540969}
   buildingPrefab: {fileID: 2100660132637976672, guid: cc58525e51a761a47b5e2a339e2845fb, type: 3}
   tilePos: {x: 0, y: 0}
+  InteriorMapping: {fileID: 2100000, guid: a8d4f3a3154b9f444af9815df1871560, type: 2}
 --- !u!1 &5183995901602192642
 GameObject:
   m_ObjectHideFlags: 0

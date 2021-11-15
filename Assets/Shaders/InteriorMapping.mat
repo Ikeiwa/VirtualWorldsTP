@@ -76,13 +76,13 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _AnimationSpeed: 0.85
-    - _BlindsVariations: 3
+    - _AnimationSpeed: 0.36
+    - _BlindsVariations: 4
     - _BumpScale: 1
     - _Corridor: 1
     - _CorridorDepth: 10
     - _CorridorMaxAmbient: 0.75
-    - _CorridorMinAmbient: 0.5
+    - _CorridorMinAmbient: 0.25
     - _Cutoff: 0.5
     - _DecorationChance: 0.25
     - _Decorations: 1
@@ -103,10 +103,10 @@ Material:
     - _RandomSeed: 0
     - _RefractionIntensity: 0.3
     - _RoomDepth: 2
-    - _RoomMaxAmbient: 0.3
-    - _RoomMinAmbient: 0.125
+    - _RoomMaxAmbient: 0.5
+    - _RoomMinAmbient: 0.2
     - _RoomOffset: 0
-    - _RoomWidth: 6
+    - _RoomWidth: 4
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _Sphere: 0

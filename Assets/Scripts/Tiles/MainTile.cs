@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+using Random = UnityEngine.Random;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -12,6 +14,7 @@ public class MainTile : MonoBehaviour
     public GameObject buildingPrefab;
     public Vector2Int tilePos;
     private BuildingComposer composer;
+    public Material InteriorMapping;
 
     public Dictionary<Vector2Int, bool> connections = new Dictionary<Vector2Int, bool>()
     {
@@ -88,15 +91,21 @@ public class MainTile : MonoBehaviour
         SpawnBuilding(boundSW);
     }
 
+    private static readonly int WindowsAlbedo = Shader.PropertyToID("_WindowAlbedo");
+
     private void SpawnBuilding(BuildingBound bounds)
     {
         GameObject building = Instantiate(buildingPrefab, buildingRoot);
         building.transform.localPosition = new Vector3(bounds.center.x,0,bounds.center.y)  - new Vector3(bounds.extend.x, 0, bounds.extend.y);
+    
+        Mesh buildingMesh = composer.ComposeNew((MetaBuildingType)UnityEngine.Random.Range(1, Enum.GetNames(typeof(MetaBuildingType)).Length), bounds.size.x, bounds.size.y);
 
-        Mesh buildingMesh = composer.ComposeNew((MetaBuildingType)UnityEngine.Random.Range(1, 5), bounds.size.x, bounds.size.y);
-
-        building.GetComponent<MeshFilter>().sharedMesh = buildingMesh;
+        Material procMat = new Material(InteriorMapping);
+        procMat.SetTextureScale(WindowsAlbedo,new Vector2(8,16));
+        
+        building.GetComponent<MeshFilter>().mesh = buildingMesh;
         building.GetComponent<MeshCollider>().sharedMesh = buildingMesh;
+        building.GetComponent<MeshRenderer>().material = procMat;
     }
 }
 
@@ -107,7 +116,7 @@ public class MainTileDrawer : Editor
 {
     public override void OnInspectorGUI()
     {
-        DrawDefaultInspector();
+        DrawDefaultInspector(); 
 
         if (GUILayout.Button("Populate"))
         {
