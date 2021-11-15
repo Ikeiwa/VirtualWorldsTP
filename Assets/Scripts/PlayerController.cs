@@ -280,7 +280,7 @@ public class PlayerController : MonoBehaviour {
         if (Input.GetMouseButton(1) && isGrappling && grabDistance > 2)
         {
             Vector3 grabDir = (grabPoint - transform.position).normalized;
-            rb.AddForce(grabDir * 10);
+            rb.AddForce(grabDir * 40);
 
             float currentDist = Vector3.Distance(transform.position, grabPoint);
 
