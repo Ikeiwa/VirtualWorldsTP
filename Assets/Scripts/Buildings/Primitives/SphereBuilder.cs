@@ -88,6 +88,7 @@ public class SphereBuilder
             triList.Add(faces[i].v3);
         }
         msh.triangles = triList.ToArray();
+        msh.RecalculateNormals();
         return msh;
     }
 

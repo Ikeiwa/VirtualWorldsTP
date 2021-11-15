@@ -113,6 +113,7 @@ public class CylindreBuilder {
         Mesh toreturn = new Mesh();
         toreturn.vertices = vertices.ToArray();
         toreturn.triangles = triangles.ToArray();
+        toreturn.RecalculateNormals();
         return toreturn;
     }
 }

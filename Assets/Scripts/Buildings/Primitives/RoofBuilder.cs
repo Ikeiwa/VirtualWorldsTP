@@ -27,6 +27,7 @@ public class RoofBuilder
             4, 5, 2
         };
 
+        toreturn.RecalculateNormals();
         return toreturn;
     }
 }

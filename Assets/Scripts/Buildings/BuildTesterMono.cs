@@ -20,7 +20,6 @@ public class BuildTesterMono : MonoBehaviour
         gameObject.AddComponent<MeshRenderer>();
         typelast = type;
         Mesh m = composer.ComposeNew(type, 8, 8);
-        m.RecalculateNormals();
         gameObject.GetComponent<MeshFilter>().mesh = m;
     }
 
@@ -38,7 +37,6 @@ public class BuildTesterMono : MonoBehaviour
         if (buildingchanged) {
             buildingchanged = false;
             Mesh m = composer.ComposeNew(type, 8, 8);
-            m.RecalculateNormals();
             gameObject.GetComponent<MeshFilter>().mesh = m;
         }
     }

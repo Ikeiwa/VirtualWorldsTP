@@ -50,8 +50,6 @@ public class BuildingComposer
 
         toreturn.uv = uvs;
 
-        toreturn.RecalculateNormals();
-
         return toreturn;
     }
 

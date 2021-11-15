@@ -23,6 +23,7 @@ public class PyramidBuilder {
             0, 3, 4
         };
 
+        toreturn.RecalculateNormals();
         return toreturn;
     }
 }
