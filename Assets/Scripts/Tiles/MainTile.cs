@@ -28,7 +28,7 @@ public class MainTile : MonoBehaviour
     {
         composer = new BuildingComposer();
 
-        PopulateTile();
+        StartCoroutine(PopulateTile());
     }
 
     [ContextMenu("Populate")]
@@ -41,11 +41,11 @@ public class MainTile : MonoBehaviour
         for (int i = buildingRoot.childCount - 1; i >= 0; i--)
             DestroyImmediate(buildingRoot.GetChild(i).gameObject);
 
-        PopulateTile();
+        StartCoroutine(PopulateTile());
     }
 
     
-    private void PopulateTile()
+    private IEnumerator PopulateTile()
     {
         BuildingBound boundNE = new BuildingBound(new Vector2(2,2),new Vector2(15,15));
         BuildingBound boundNW = new BuildingBound(new Vector2(-2,2),new Vector2(-15,15));
@@ -86,8 +86,11 @@ public class MainTile : MonoBehaviour
         }
         
         SpawnBuilding(boundNE);
+        yield return new WaitForEndOfFrame();
         SpawnBuilding(boundNW);
+        yield return new WaitForEndOfFrame();
         SpawnBuilding(boundSE);
+        yield return new WaitForEndOfFrame();
         SpawnBuilding(boundSW);
     }
 
@@ -102,7 +105,31 @@ public class MainTile : MonoBehaviour
 
         Material procMat = new Material(InteriorMapping);
         procMat.SetTextureScale(WindowsAlbedo,new Vector2(8,16));
-        
+        procMat.SetFloat("_RandomSeed", Random.Range(0,1000));
+        procMat.SetFloat("_RoomDepth",Random.Range(2,4));
+        procMat.SetFloat("_RoomWidth", Random.Range(4,8));
+        if(Random.value > 0.75f)
+            procMat.DisableKeyword("_CORRIDOR_ON");
+        if (Random.value > 0.9f)
+        {
+            procMat.SetFloat("_RoomMaxAmbient",0.1f);
+            procMat.SetFloat("_RoomMinAmbient", 0.1f);
+            procMat.SetFloat("_CorridorMaxAmbient", 0.1f);
+            procMat.SetFloat("_CorridorMinAmbient", 0.1f);
+        }else if (Random.value > 0.9f)
+        {
+            procMat.SetFloat("_RoomMaxAmbient", 1f);
+            procMat.SetFloat("_RoomMinAmbient", 1f);
+            procMat.SetFloat("_CorridorMaxAmbient", 1f);
+            procMat.SetFloat("_CorridorMinAmbient", 1f);
+        }
+
+        if (Random.value > 0.99f)
+        {
+            procMat.EnableKeyword("_SPHERE_ON");
+        }
+
+
         building.GetComponent<MeshFilter>().mesh = buildingMesh;
         building.GetComponent<MeshCollider>().sharedMesh = buildingMesh;
         building.GetComponent<MeshRenderer>().material = procMat;

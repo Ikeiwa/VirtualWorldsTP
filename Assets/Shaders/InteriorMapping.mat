@@ -101,9 +101,9 @@ Material:
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _RandomSeed: 0
-    - _RefractionIntensity: 0.3
+    - _RefractionIntensity: 0
     - _RoomDepth: 2
-    - _RoomMaxAmbient: 0.5
+    - _RoomMaxAmbient: 0.75
     - _RoomMinAmbient: 0.2
     - _RoomOffset: 0
     - _RoomWidth: 4
