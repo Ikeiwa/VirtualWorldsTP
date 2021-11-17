@@ -7,7 +7,7 @@ This aims at creating a megastructure like explorative feeling, and serves as te
 
 ## Overview
 
-Wip: screenshots
+<img src="https://cdn.discordapp.com/attachments/889777542913982475/910547567891337246/unknown.png">Aerial city view</img>
 
 ## Installing
 
