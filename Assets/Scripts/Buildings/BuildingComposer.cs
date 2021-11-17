@@ -224,8 +224,7 @@ public class BuildingComposer
         {
             Mesh submesh = new Mesh();
             submesh.CombineMeshes(combine[i].ToArray(), true, true, false);
-            returncombine.Add(new CombineInstance { mesh = submesh, subMeshIndex = i, transform = Matrix4x4.identity });
-            Debug.Log("Submesh : " + i + " with " + combine[i].Count + " parts.");
+            returncombine.Add(new CombineInstance { mesh = submesh, subMeshIndex = 0, transform = Matrix4x4.identity });
         }
         Mesh toreturn = new Mesh();
         toreturn.CombineMeshes(returncombine.ToArray(), false, true, false);
