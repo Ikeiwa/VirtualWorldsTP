@@ -104,7 +104,13 @@ public class MainTile : MonoBehaviour
         Mesh buildingMesh = composer.ComposeNew((MetaBuildingType)UnityEngine.Random.Range(1, Enum.GetNames(typeof(MetaBuildingType)).Length), bounds.size.x, bounds.size.y);
 
         Material procMat = new Material(InteriorMapping);
+
+        Vector3 pos = building.transform.position / 100f;
+
+        Color tint = Color.HSVToRGB(Mathf.PerlinNoise(pos.x, pos.z), Mathf.PerlinNoise(pos.x + 100, pos.z), 1);
+
         procMat.SetTextureScale(WindowsAlbedo,new Vector2(8,16));
+        procMat.SetColor("_WindowsTint", tint);
         procMat.SetFloat("_RandomSeed", Random.Range(0,1000));
         procMat.SetFloat("_RoomDepth",Random.Range(2,4));
         procMat.SetFloat("_RoomWidth", Random.Range(4,8));
