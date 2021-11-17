@@ -116,6 +116,41 @@ The minimal code to return a base with a cube on top is the following:
 </details>
 <details><summary>Tiled map generation</summary>
 <p>
-WIP
+<h3>Building definition</h3>
+ 
+A Tile is defined by the following elements:
+  - a <b>Position in grid</b>
+  - a <b>Base</b>
+  - 4 <b>Buildings</b>
+  - 4 <b>Connections</b>
+ 
+Tiles are created by a manager based on the Player location and are stored in a Dictionnary with their location in the grid.
+First we check a square of tiles around the player and if a position is not in dictionnary we spawn a tile.
+```csharp
+for (int x = 0; x < viewDistance; x++)
+{
+    for (int y = 0; y < viewDistance; y++)
+    {
+        SpawnTile(x-halfView+currentPlayerTile.x, y-halfView+currentPlayerTile.y);
+        yield return new WaitForEndOfFrame();
+    }
+}
+```
+When a tile spawn we define four 2D bounds defining the buildings present in the tile.
+Then we randomly close each connection (north, south, east, west) by extending the bounds to touch a neighbor one.
+```csharp
+BuildingBound boundNE = new BuildingBound(new Vector2(2,2),new Vector2(15,15));
+BuildingBound boundNW = new BuildingBound(new Vector2(-2,2),new Vector2(-15,15));
+BuildingBound boundSE = new BuildingBound(new Vector2(2,-2),new Vector2(15,-15));
+BuildingBound boundSW = new BuildingBound(new Vector2(-2,-2),new Vector2(-15,-15));
+
+//connection up
+if (Random.value < 0.25f)
+{
+    boundNE.SnapTo(boundNW);
+    connections[Vector2Int.up] = false;
+} 
+```
+Once all of that is done we can call the building Composer to generate each corner building.
 </p>
 </details>
