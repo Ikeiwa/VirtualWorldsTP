@@ -50,6 +50,8 @@ public class BuildingComposer
 
         toreturn.uv = uvs;
 
+        toreturn.RecalculateTangents();
+
         return toreturn;
     }
 
