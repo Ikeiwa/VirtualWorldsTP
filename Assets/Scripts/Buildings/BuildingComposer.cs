@@ -66,7 +66,7 @@ public class BuildingComposer
         CombineAdd(combine[1], m1, new Vector3(sizeX / 2, 0.05f, sizeZ / 2), new Vector3(sizeX, 0.1f, sizeZ));
 
         CombineAdd(combine[0], m1, new Vector3(sizeX / 2, 0.6f, sizeZ / 2), new Vector3(1, 1, 1));
-        CombineAdd(combine[0], m2, new Vector3(sizeX / 2, 1.6f, sizeZ / 2), new Vector3(1.5f, 1, 1));
+        CombineAdd(combine[1], m2, new Vector3(sizeX / 2, 1.6f, sizeZ / 2), new Vector3(1.5f, 1, 1));
 
         return ComputeCombine(combine);
     }
@@ -85,25 +85,25 @@ public class BuildingComposer
         {
             float sizeLocalX = (float)rand.NextDouble() * (sizeX / 2.2f) + sizeX / 4f,
                 sizeLocalZ = (float)rand.NextDouble() * (sizeZ / 2.5f) + sizeX / 4f;
-            BuildDecorator.addBrutalSegment(combine[0], 0.3f, 0.3f, sizeLocalX, sizeLocalZ, rand.Next(5) + 1);
+            BuildDecorator.addBrutalSegment(combine[0], combine[1], 0.3f, 0.3f, sizeLocalX, sizeLocalZ, rand.Next(5) + 1);
         }
         if (notgenerated != 1)
         {
             float sizeLocalX = (float)rand.NextDouble() * (sizeX / 2.2f) + sizeX / 4f,
                 sizeLocalZ = (float)rand.NextDouble() * (sizeZ / 2.5f) + sizeX / 4f;
-            BuildDecorator.addBrutalSegment(combine[0], sizeX - sizeLocalX - 0.15f, 0.1f, sizeLocalX, sizeLocalZ, rand.Next(3) + 1);
+            BuildDecorator.addBrutalSegment(combine[0], combine[1], sizeX - sizeLocalX - 0.15f, 0.1f, sizeLocalX, sizeLocalZ, rand.Next(3) + 1);
         }
         if (notgenerated != 2)
         {
             float sizeLocalX = (float)rand.NextDouble() * (sizeX / 2.2f) + sizeX / 4f,
                 sizeLocalZ = (float)rand.NextDouble() * (sizeZ / 2.5f) + sizeX / 4f;
-            BuildDecorator.addBrutalSegment(combine[0], 0.2f, sizeZ - sizeLocalZ - 0.15f, sizeLocalX, sizeLocalZ, rand.Next(3) + 2);
+            BuildDecorator.addBrutalSegment(combine[0], combine[1], 0.2f, sizeZ - sizeLocalZ - 0.15f, sizeLocalX, sizeLocalZ, rand.Next(3) + 2);
         }
         if (notgenerated != 3)
         {
             float sizeLocalX = (float)rand.NextDouble() * (sizeX / 2.2f) + sizeX / 4f,
                 sizeLocalZ = (float)rand.NextDouble() * (sizeZ / 2.5f) + sizeX / 4f;
-            BuildDecorator.addBrutalSegment(combine[0], sizeX - sizeLocalX - 0.17f, sizeZ - sizeLocalZ - 0.17f, sizeLocalX, sizeLocalZ, rand.Next(4) + 2);
+            BuildDecorator.addBrutalSegment(combine[0], combine[1], sizeX - sizeLocalX - 0.17f, sizeZ - sizeLocalZ - 0.17f, sizeLocalX, sizeLocalZ, rand.Next(4) + 2);
         }
 
         return ComputeCombine(combine);
@@ -123,26 +123,26 @@ public class BuildingComposer
 
         // Main cylindre
         CombineAdd(combine[0], cyl, new Vector3((sizeX / 3), 0.01f + height / 2, (sizeZ / 2)), new Vector3(sizeX / 3 * 2, height, sizeZ - 1f));
-        CombineAdd(combine[0], cyl, new Vector3((sizeX / 3), 0.1f + UniversalFloorSize, (sizeZ / 2)), new Vector3(sizeX / 3 * 2 + 0.4f, 0.3f, sizeZ - 0.6f));
+        CombineAdd(combine[1], cyl, new Vector3((sizeX / 3), 0.1f + UniversalFloorSize, (sizeZ / 2)), new Vector3(sizeX / 3 * 2 + 0.4f, 0.3f, sizeZ - 0.6f));
         // Entrance
         CombineAdd(combine[0], penta, new Vector3((sizeX / 3) * 2, 0.01f + UniversalFloorSize / 2, (sizeZ / 4)), new Vector3(sizeX / 3 * 2, UniversalFloorSize, sizeZ / 4));
-        CombineAdd(combine[0], penta, new Vector3((sizeX / 3) * 2, 0.01f + UniversalFloorSize, (sizeZ / 4)), new Vector3(sizeX / 3 * 2 + 0.4f, 0.3f, sizeZ / 4 + 0.4f));
+        CombineAdd(combine[1], penta, new Vector3((sizeX / 3) * 2, 0.01f + UniversalFloorSize, (sizeZ / 4)), new Vector3(sizeX / 3 * 2 + 0.4f, 0.3f, sizeZ / 4 + 0.4f));
 
         int toptype = rand.Next(3);
         // Building Top
         if (toptype == 0 || toptype == 1)
-            CombineAdd(combine[0], cyl, new Vector3((sizeX / 3), 0.01f + height, sizeZ / 3), new Vector3((sizeX / 3 * 2) * 0.4f, height / 2, (sizeZ - 1f) * 0.4f));
+            CombineAdd(combine[0], cyl, new Vector3((sizeX / 3), 0.01f + height - UniversalFloorSize / 2, sizeZ / 3), new Vector3((sizeX / 3 * 2) * 0.4f, height / 2, (sizeZ - 1f) * 0.4f));
         if (toptype == 0 || toptype == 2)
-            CombineAdd(combine[0], cyl, new Vector3((sizeX / 3), 0.01f + height, (sizeZ / 3) * 2), new Vector3((sizeX / 3 * 2) * 0.4f, height / 2, (sizeZ - 1f) * 0.6f));
+            CombineAdd(combine[0], cyl, new Vector3((sizeX / 3), 0.03f + height - UniversalFloorSize / 2, (sizeZ / 3) * 2), new Vector3((sizeX / 3 * 2) * 0.4f, height / 2, (sizeZ - 1f) * 0.6f));
         // Ball on top
         if (toptype == 0 && rand.Next(2) == 1)
-            CombineAdd(combine[0], sphere, new Vector3((sizeX / 3), height * 1.25f, sizeZ / 2), new Vector3((sizeX / 3 * 2) * 0.3f, UniversalFloorSize / 2.5f, (sizeZ - 1f) * 0.5f));
+            CombineAdd(combine[1], sphere, new Vector3((sizeX / 3), height * 1.25f - UniversalFloorSize / 2, sizeZ / 2), new Vector3((sizeX / 3 * 2) * 0.3f, UniversalFloorSize / 2.5f, (sizeZ - 1f) * 0.5f));
         // Add antenas
         int antenas = rand.Next(3);
         if (antenas == 1)
         {
             CombineAdd(combine[0], cube, new Vector3(sizeX / 4 * 3 + 1, UniversalFloorSize / 2, sizeZ / 4 * 3 + 1), new Vector3(1.7f, UniversalFloorSize, 1.7f));
-            BuildDecorator.AddAntenasCluster(combine[0], sizeX / 4 * 3, UniversalFloorSize, sizeZ / 4 * 3, 2, 2);
+            BuildDecorator.AddAntenasCluster(combine[1], sizeX / 4 * 3, UniversalFloorSize, sizeZ / 4 * 3, 2, 2);
         }
 
         return ComputeCombine(combine);
@@ -175,7 +175,7 @@ public class BuildingComposer
 
         }
 
-        BuildDecorator.AddAntenasCluster(combine[0], highestX - 0.6f, highest, highestZ - 0.6f, 1.2f, 1.2f, 5);
+        BuildDecorator.AddAntenasCluster(combine[1], highestX - 0.6f, highest, highestZ - 0.6f, 1.2f, 1.2f, 5);
 
         return ComputeCombine(combine);
     }
@@ -193,7 +193,7 @@ public class BuildingComposer
         float lenSideX = sizeX / divisionsX, lenSideZ = sizeZ / divisionsZ;
         for (int floor = 0; floor < floors; floor++)
         {
-            CombineAdd(combine[0], cube, new Vector3(sizeX / 2, UniversalFloorSize + floor * UniversalFloorSize * 2, sizeZ / 2), new Vector3(sizeX - 1.5f, UniversalFloorSize * 2 - 1.2f, sizeZ - 1.5f));
+            CombineAdd(combine[1], cube, new Vector3(sizeX / 2, UniversalFloorSize + floor * UniversalFloorSize * 2, sizeZ / 2), new Vector3(sizeX - 1.5f, UniversalFloorSize * 2 - 1.2f, sizeZ - 1.5f));
             for (int x = 0; x < divisionsX; x++)
                 for (int z = 0; z < divisionsZ; z++)
                 {
@@ -206,7 +206,7 @@ public class BuildingComposer
                 }
         }
 
-        CombineAdd(combine[0], sphere, new Vector3(sizeX / 2, 0.05f, sizeZ / 2), new Vector3(sizeX / 2.6f, (floors - 1 + (float)rand.NextDouble() * 2) * UniversalFloorSize * 2, sizeZ / 2.6f));
+        CombineAdd(combine[1], sphere, new Vector3(sizeX / 2, 0.05f, sizeZ / 2), new Vector3(sizeX / 2.6f, (floors - 1 + (float)rand.NextDouble() * 2) * UniversalFloorSize * 2, sizeZ / 2.6f));
 
         return ComputeCombine(combine);
     }

@@ -10,12 +10,12 @@ public static class BuildDecorator
 {
     public static readonly float UniversalFloorSize = BuildingComposer.UniversalFloorSize;
 
-    public static void addBrutalSegment(List<CombineInstance> combine, float x, float z, float sizeX, float sizeZ, int floors)
+    public static void addBrutalSegment(List<CombineInstance> combinewindows, List<CombineInstance> combinefull, float x, float z, float sizeX, float sizeZ, int floors)
     {
         Mesh cube = PrimitiveFactory.GetMesh(PrimitiveType.Cube);
         Mesh pyra = PrimitiveFactory.GetMesh(PrimitiveType.Pyramid4);
         float height = UniversalFloorSize * floors;
-        combine.Add(new CombineInstance
+        combinewindows.Add(new CombineInstance
         {
             mesh = cube,
             subMeshIndex = 0,
@@ -23,14 +23,14 @@ public static class BuildDecorator
         });
         for (int f = 1; f <= floors; f++)
         {
-            combine.Add(new CombineInstance
+            combinefull.Add(new CombineInstance
             {
                 mesh = cube,
                 subMeshIndex = 0,
                 transform = Matrix4x4.TRS(new Vector3(x + (sizeX / 2), 0.01f + (f * height / floors), z + (sizeZ / 2)), Quaternion.identity, new Vector3(sizeX + 0.2f, 0.1f, sizeZ + 0.2f))
             });
         }
-        combine.Add(new CombineInstance
+        combinefull.Add(new CombineInstance
         {
             mesh = pyra,
             subMeshIndex = 0,
