@@ -70,7 +70,7 @@ A building is defined by the following elements:
  
  Note that this code does not procedurally generate random data for the interior mapping shader.<br/>
  To do so, you may use:
- ```
+ ```csharp
   Material procMat = new Material(InteriorMapping);
   procMat.SetTextureScale(WindowsAlbedo,new Vector2(8,16));
         
